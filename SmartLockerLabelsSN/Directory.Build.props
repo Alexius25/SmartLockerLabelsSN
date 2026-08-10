@@ -1,0 +1,5 @@
+<Project>
+    <PropertyGroup>
+        <SubnauticaDir>/mnt/data/SteamLibrary/steamapps/common/Subnautica</SubnauticaDir>
+    </PropertyGroup>
+</Project>

@@ -1,0 +1,83 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>
+        <AssemblyName>SmartLockerLabelsSN</AssemblyName>
+        <Version>1.0.0</Version>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>11</LangVersion>
+        <RootNamespace>SmartLockerLabelsSN</RootNamespace>
+        <BepInExPluginGuid>com.alexius25.smartlockerlabels</BepInExPluginGuid>
+
+        <RestoreAdditionalProjectSources>
+            https://api.nuget.org/v3/index.json;
+            https://nuget.bepinex.dev/v3/index.json;
+        </RestoreAdditionalProjectSources>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
+        <PackageReference Include="BepInEx.Core" Version="5.4.21"/>
+        <PackageReference Include="BepInEx.PluginInfoProps" Version="1.1.0"/>
+        <PackageReference Include="UnityEngine.Modules" Version="2019.4.36" IncludeAssets="compile"/>
+        <PackageReference Include="Unity.InputSystem" Version="1.4.1" IncludeAssets="compile"/>
+        <PackageReference Include="Subnautica.GameLibs" Version="82304.0.0-r.0"/>
+        <PackageReference Include="PolySharp" Version="1.15.0"/>
+        <PackageReference Include="Subnautica.Nautilus" Version="1.*-*" PrivateAssets="all"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies"
+                          Version="1.0.2"
+                          PrivateAssets="all"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <LocalizationFiles Include="Localization/**/*" />
+    </ItemGroup>
+
+    <!-- Clean destination folder before build -->
+    <Target Name="CleanDestinationFolder"
+            BeforeTargets="Build"
+            Condition="'$(SubnauticaDir)' != ''">
+
+        <ItemGroup>
+            <FilesToDelete Include="$(SubnauticaDir)/BepInEx/plugins/SmartLockerLabelsSN/**/*" />
+        </ItemGroup>
+
+        <Delete Files="@(FilesToDelete)" />
+
+    </Target>
+
+    <!-- Copy DLL and Localization after build -->
+    <Target Name="CopyToDestination"
+            AfterTargets="Build"
+            Condition="'$(SubnauticaDir)' != ''">
+
+        <Message Text="SubnauticaDir = $(SubnauticaDir)" Importance="high" />
+
+        <!-- Copy DLL -->
+        <Copy
+                SourceFiles="$(OutputPath)SmartLockerLabelsSN.dll"
+                DestinationFolder="$(SubnauticaDir)/BepInEx/plugins/SmartLockerLabelsSN/"
+        />
+
+        <!-- Copy Localization -->
+        <Copy
+                SourceFiles="@(LocalizationFiles)"
+                DestinationFiles="@(LocalizationFiles->'$(SubnauticaDir)/BepInEx/plugins/SmartLockerLabelsSN/Localization/%(RecursiveDir)%(Filename)%(Extension)')"
+        />
+
+        <!-- Launch Subnautica via Steam depending on OS -->
+        <Exec Condition="'$(OS)' == 'Unix'"
+              Command="xdg-open steam://rungameid/264710" />
+
+        <Exec Condition="'$(OS)' == 'OSX'"
+              Command="open steam://rungameid/264710" />
+
+        <Exec Condition="'$(OS)' == 'Windows_NT'"
+              Command="start steam://rungameid/264710" />
+
+    </Target>
+
+</Project>

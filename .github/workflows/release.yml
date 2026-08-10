@@ -1,0 +1,58 @@
+name: Build & Release Mod
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: Extract version
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Restore dependencies
+        run: dotnet restore SmartLockerLabelsSN.csproj
+
+      - name: Build
+        run: |
+          dotnet build SmartLockerLabelsSN.csproj \
+            --configuration Release \
+            --no-restore
+
+      - name: Prepare release files
+        run: |
+          mkdir -p release/SmartLockerLabelsSN
+
+          cp bin/Release/net472/SmartLockerLabelsSN.dll release/SmartLockerLabelsSN/
+          cp -r bin/Release/net472/Localization release/SmartLockerLabelsSN/
+
+      - name: Create ZIP
+        run: |
+          cd release
+          zip -r ../SmartLockerLabelsSN-${{ steps.version.outputs.VERSION }}.zip SmartLockerLabelsSN
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.VERSION }}
+          name: SmartLockerLabelsSN v${{ steps.version.outputs.VERSION }}
+          generate_release_notes: true
+          files: |
+            SmartLockerLabelsSN-${{ steps.version.outputs.VERSION }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
