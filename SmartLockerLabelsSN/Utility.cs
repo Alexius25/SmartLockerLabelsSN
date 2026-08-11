@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 using UnityEngine;
 
@@ -7,19 +8,19 @@ public static class Utility
 {
     public static bool IsEquipment(TechType techType)
     {
-        var type = TechData.GetEquipmentType(techType);
+        EquipmentType type = TechData.GetEquipmentType(techType);
         return type is EquipmentType.Tank or EquipmentType.Head or EquipmentType.Body or EquipmentType.Gloves or EquipmentType.Foots;
     }
 
     public static bool IsPdaChip(TechType techType)
     {
-        var type = TechData.GetEquipmentType(techType);
+        EquipmentType type = TechData.GetEquipmentType(techType);
         return type is EquipmentType.Chip;
     }
 
     public static bool IsVehicleModule(TechType techType)
     {
-        var type = TechData.GetEquipmentType(techType);
+        EquipmentType type = TechData.GetEquipmentType(techType);
         return type is EquipmentType.CyclopsModule or EquipmentType.ExosuitArm or EquipmentType.ExosuitModule or EquipmentType.SeamothModule or EquipmentType.VehicleModule;
     }
 
@@ -130,7 +131,6 @@ public static class Utility
     {
         if (TechData.GetBackgroundType(techType) == CraftData.BackgroundType.PlantAir)
             return true;
-        
         if (TechData.GetBackgroundType(techType) == CraftData.BackgroundType.PlantAirSeed)
             return true;
         if (TechData.GetBackgroundType(techType) == CraftData.BackgroundType.PlantWaterSeed)
@@ -143,7 +143,7 @@ public static class Utility
 
     private static GameObject GetItemGameObject(TechType techType, StorageContainer container)
     {
-        var items = container.container.GetItems(techType);
+        IList<InventoryItem> items = container.container.GetItems(techType);
         if (items.Count == 0)
             return null;
         

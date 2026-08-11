@@ -1,5 +1,4 @@
 // ReSharper disable InconsistentNaming
-
 using HarmonyLib;
 using SmartLockerLabelsSN.Label;
 
@@ -12,33 +11,29 @@ public static class StorageContainerPatcher
     [HarmonyPatch(nameof(StorageContainer.OnClose))]
     public static void OnClosePostfix(StorageContainer __instance)
     {
-        var storageType = LabelHandler.GetStorageType(__instance);
+        TechType storageType = LabelHandler.GetStorageType(__instance);
 
-        if (storageType == TechType.Aquarium)
+        if (storageType is TechType.Aquarium or TechType.Locker)
         {
-            // ErrorMessage.AddDebug("Closed Aquarium");
-            return;
-        }
-
-        if (storageType == TechType.Locker)
-        {
-            // maybe support in the future
-            // ErrorMessage.AddDebug("Closed Locker"); 
             return;
         }
 
         if (storageType is TechType.SmallLocker or TechType.SmallStorage)
         {
-            ErrorMessage.AddDebug("Closed supported storage");
-            ErrorMessage.AddDebug($"Would be label: {LabelHandler.GetStorageLabel(__instance)}");
-
-            var signInput = storageType == TechType.SmallLocker
+            uGUI_SignInput signInput = storageType == TechType.SmallLocker
                 ? __instance.gameObject.GetComponentInChildren<uGUI_SignInput>()
                 : __instance.gameObject.transform.parent.gameObject.GetComponentInChildren<uGUI_SignInput>();
 
             if (signInput != null)
             {
-                signInput.text = LabelHandler.GetStorageLabel(__instance);
+                string localized = LabelHandler.GetStorageLabel(__instance);
+                signInput.text = localized;
+                Plugin.Logger.LogInfo($"Localized storage label: {localized}; Storage type: {storageType}");
+            }
+            else
+            {
+                ErrorMessage.AddError($"Storage label not found");
+                Plugin.Logger.LogError($"Storage label not found");
             }
         }
     }

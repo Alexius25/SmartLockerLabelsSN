@@ -16,16 +16,16 @@ public enum StorageCategory
     Battery,
     Powercell,
     Power,
-    ReactorRods,
-    Decoys,
+    ReactorRod,
+    Decoy,
     Food,
-    PrecursorKeys,
-    Tools,
-    Placeables,
+    PrecursorKey,
+    Tool,
+    Placeable,
     Poster,
     Deco,
     Fish,
-    PdaChips,
+    PdaChip,
         
     Resource
 }
