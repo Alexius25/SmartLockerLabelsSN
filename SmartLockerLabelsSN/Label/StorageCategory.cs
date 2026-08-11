@@ -5,6 +5,8 @@ public enum StorageCategory
     Unknown,
         
     RawMaterial,
+    AdvancedMaterial,
+    MixedMaterial,
     PlantWater,
     PlantWaterSeed,
     PlantAir,
@@ -13,6 +15,7 @@ public enum StorageCategory
     VehicleModule,
     Battery,
     Powercell,
+    Power,
     ReactorRods,
     Decoys,
     Food,
@@ -20,6 +23,9 @@ public enum StorageCategory
     Tools,
     Placeables,
     Poster,
+    Deco,
+    Fish,
+    PdaChips,
         
     Resource
 }

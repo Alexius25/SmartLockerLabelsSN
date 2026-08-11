@@ -8,7 +8,13 @@ public static class Utility
     public static bool IsEquipment(TechType techType)
     {
         var type = TechData.GetEquipmentType(techType);
-        return type is EquipmentType.Tank or EquipmentType.Head or EquipmentType.Body or EquipmentType.Gloves or EquipmentType.Foots or EquipmentType.Chip;
+        return type is EquipmentType.Tank or EquipmentType.Head or EquipmentType.Body or EquipmentType.Gloves or EquipmentType.Foots;
+    }
+
+    public static bool IsPdaChip(TechType techType)
+    {
+        var type = TechData.GetEquipmentType(techType);
+        return type is EquipmentType.Chip;
     }
 
     public static bool IsVehicleModule(TechType techType)
@@ -72,6 +78,11 @@ public static class Utility
         return false;
     }
 
+    public static bool IsAdvancedMaterial(TechType techType)
+    {
+        return CraftTree.IsCraftable(techType);
+    }
+    
     public static bool IsTool(TechType techType, StorageContainer container)
     {
         GameObject gameObject = GetItemGameObject(techType, container);
@@ -103,6 +114,31 @@ public static class Utility
         }
         
         return isPoster;
+    }
+
+    public static bool IsFish(TechType techType, StorageContainer container)
+    {
+        if (IsPlant(techType, container)) return false;
+        
+        GameObject gameObject = GetItemGameObject(techType, container);
+        LiveMixin liveMixin = gameObject.GetComponent<LiveMixin>();
+
+        return liveMixin != null;
+    }
+
+    private static bool IsPlant(TechType techType, StorageContainer container)
+    {
+        if (TechData.GetBackgroundType(techType) == CraftData.BackgroundType.PlantAir)
+            return true;
+        
+        if (TechData.GetBackgroundType(techType) == CraftData.BackgroundType.PlantAirSeed)
+            return true;
+        if (TechData.GetBackgroundType(techType) == CraftData.BackgroundType.PlantWaterSeed)
+            return true;
+        if (TechData.GetBackgroundType(techType) == CraftData.BackgroundType.PlantWater)
+            return true;
+        
+        return false;
     }
 
     private static GameObject GetItemGameObject(TechType techType, StorageContainer container)

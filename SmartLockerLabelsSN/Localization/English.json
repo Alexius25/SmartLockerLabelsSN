@@ -1,3 +1,26 @@
 {
-  "SL_Resources": "Resources"
+  "SL_Unknown": "Unknown",
+  "SL_RawMaterial": "Raw Materials",
+  "SL_AdvancedMaterial": "Advanced Materials",
+  "SL_MixedMaterial": "Mixed Materials",
+  "SL_PlantWater": "Water Plants",
+  "SL_PlantWaterSeed": "Water Plant Seeds",
+  "SL_PlantAir": "Air Plants",
+  "SL_PlantAirSeed": "Air Plant Seeds",
+  "SL_Equipment": "Equipment",
+  "SL_VehicleModule": "Vehicle Modules",
+  "SL_Battery": "Batteries",
+  "SL_Powercell": "Power Cells",
+  "SL_Power": "Power",
+  "SL_ReactorRods": "Reactor Rods",
+  "SL_Decoys": "Decoys",
+  "SL_Food": "Food",
+  "SL_PrecursorKeys": "Precursor Tablets",
+  "SL_Tools": "Tools",
+  "SL_Placeables": "Placeables",
+  "SL_Poster": "Posters",
+  "SL_Deco": "Decorations",
+  "SL_Resource": "Resources",
+  "SL_Fish": "Fish",
+  "SL_PdaChips": "PDA Chips"
 }
