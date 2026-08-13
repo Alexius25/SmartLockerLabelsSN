@@ -15,7 +15,7 @@ public class Plugin : BaseUnityPlugin
 
     private static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
 
-    internal static bool IsPrototypePossible = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.prototech.prototypesub");
+    internal static readonly bool IsPrototypePossible = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.prototech.prototypesub");
     
     private void Awake()
     {
@@ -24,6 +24,8 @@ public class Plugin : BaseUnityPlugin
         
         LanguageHandler.RegisterLocalizationFolder();
 
+        SaveData.main = SaveDataHandler.RegisterSaveDataCache<SaveData>();
+        
         // register harmony patches, if there are any
         Harmony.CreateAndPatchAll(Assembly, $"{PluginInfo.PLUGIN_GUID}");
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");

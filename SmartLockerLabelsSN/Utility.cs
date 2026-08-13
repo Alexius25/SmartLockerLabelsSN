@@ -163,4 +163,31 @@ public static class Utility
         GameObject gameObject = items[0].item.gameObject;
         return gameObject;
     }
+
+    internal static Sign GetNearestSign(Sign[] signs, Vector3 position, float maxDistance = 1.5f)
+    {
+        float maxDistanceSqr = maxDistance * maxDistance;
+
+        Sign bestTarget = null;
+        float closetDistanceSqr = maxDistanceSqr;
+
+        foreach (Sign potentialSign in signs)
+        {
+            Vector3 directionToTarget = potentialSign.transform.position - position;
+            float distanceSqr = directionToTarget.sqrMagnitude;
+
+            if (distanceSqr <= closetDistanceSqr)
+            {
+                closetDistanceSqr = distanceSqr;
+                bestTarget = potentialSign;
+            }
+        }
+
+        return bestTarget;
+    }
+
+    internal static string GetPrefabId(GameObject gameObject)
+    {
+        return gameObject.GetComponent<PrefabIdentifier>().Id;
+    }
 }

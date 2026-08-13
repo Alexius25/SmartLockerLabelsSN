@@ -1,6 +1,7 @@
 // ReSharper disable InconsistentNaming
 using HarmonyLib;
 using SmartLockerLabelsSN.Label;
+using UnityEngine;
 
 namespace SmartLockerLabelsSN.Patches;
 
@@ -17,6 +18,34 @@ public static class StorageContainerPatcher
         {
             return;
         }
+
+        /* Janky af
+        if (storageType is TechType.Locker)
+        {
+            Sign[] signs = GameObject.FindObjectsOfType<Sign>();
+            Sign nearest = Utility.GetNearestSign(signs, __instance.transform.position);
+
+            if (nearest == null)
+            {
+                Plugin.Logger.LogError("Could not find nearest sign");
+                return;
+            }
+            
+            uGUI_SignInput signInput = nearest.gameObject.GetComponentInChildren<uGUI_SignInput>();
+
+            if (signInput != null)
+            {
+                string localized = LabelHandler.GetStorageLabel(__instance);
+                signInput.text = localized;
+                Plugin.Logger.LogInfo($"Localized storage label: {localized}");
+            }
+            else
+            {
+                ErrorMessage.AddError($"Storage label not found");
+                Plugin.Logger.LogError($"Storage label not found");
+            }
+        }
+        */
 
         if (storageType is TechType.SmallLocker or TechType.SmallStorage)
         {
