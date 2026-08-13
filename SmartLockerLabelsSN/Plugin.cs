@@ -7,6 +7,7 @@ using System.Reflection;
 namespace SmartLockerLabelsSN;
 
 [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+[BepInDependency("com.prototech.prototypesub", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInDependency("com.snmodding.nautilus")]
 public class Plugin : BaseUnityPlugin
 {
@@ -14,6 +15,8 @@ public class Plugin : BaseUnityPlugin
 
     private static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
 
+    internal static bool IsPrototypePossible = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.prototech.prototypesub");
+    
     private void Awake()
     {
         // set project-scoped logger instance

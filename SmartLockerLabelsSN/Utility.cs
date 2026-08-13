@@ -55,12 +55,25 @@ public static class Utility
         return false;
     }
 
-    public static bool IsPrecursorKey(TechType techType)
+    public static bool IsPrecursorKey(TechType techType, StorageContainer container)
     {
-        return Enum.TryParse<PrecursorKeyTerminal.PrecursorKeyType>(
-            techType.ToString(),
-            out _
-        );
+        bool baseGameKey = Enum.TryParse<PrecursorKeyTerminal.PrecursorKeyType>(techType.ToString(), out _);
+        
+        if (baseGameKey)
+        {
+            return true;
+        }
+
+        GameObject gameObject = GetItemGameObject(techType, container);
+        InspectOnFirstPickup inspect =  gameObject.GetComponent<InspectOnFirstPickup>();
+
+        // for compability with mods like The Prototype Expansion
+        if (inspect != null && inspect.animParam == "holding_precursorkey")
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public static bool IsRawMaterial(TechType techType)

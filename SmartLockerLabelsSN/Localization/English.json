@@ -12,15 +12,17 @@
   "SL_Battery": "Batteries",
   "SL_Powercell": "Power Cells",
   "SL_Power": "Power",
-  "SL_ReactorRods": "Reactor Rods",
-  "SL_Decoys": "Decoys",
+  "SL_ReactorRod": "Reactor Rods",
+  "SL_Decoy": "Decoys",
   "SL_Food": "Food",
-  "SL_PrecursorKeys": "Precursor Tablets",
-  "SL_Tools": "Tools",
-  "SL_Placeables": "Placeables",
+  "SL_PrecursorKey": "Precursor Tablets",
+  "SL_Tool": "Tools",
+  "SL_Placeable": "Placeables",
   "SL_Poster": "Posters",
   "SL_Deco": "Decorations",
   "SL_Resource": "Resources",
   "SL_Fish": "Fish",
-  "SL_PdaChips": "PDA Chips"
+  "SL_PdaChip": "PDA Chips",
+  
+  "SL_PrototypeExpansion": "Prototype"
 }

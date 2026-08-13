@@ -26,6 +26,8 @@ public enum StorageCategory
     Deco,
     Fish,
     PdaChip,
+    
+    PrototypeExpansion,
         
     Resource
 }

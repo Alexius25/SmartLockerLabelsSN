@@ -15,7 +15,6 @@ public static class LabelHandler
         (Utility.IsBattery, StorageCategory.Battery),
         (Utility.IsDecoy, StorageCategory.Decoy),
         (Utility.IsReactorRod, StorageCategory.ReactorRod),
-        (Utility.IsPrecursorKey, StorageCategory.PrecursorKey), 
         (Utility.IsRawMaterial, StorageCategory.RawMaterial),
         (Utility.IsAdvancedMaterial, StorageCategory.AdvancedMaterial),
     };
@@ -34,6 +33,11 @@ public static class LabelHandler
 
     private static StorageCategory GetStorageCategory(TechType techType, StorageContainer container)
     {
+        if (Utility.IsPrecursorKey(techType, container))
+        {
+            return StorageCategory.PrecursorKey;
+        }
+
         if (Utility.IsFish(techType, container))
         {
             return StorageCategory.Fish;
@@ -49,40 +53,46 @@ public static class LabelHandler
         {
             return StorageCategory.Tool;
         }
-        
-        // Plants
-        if (TechData.GetBackgroundType(techType) == CraftData.BackgroundType.PlantAir)
+
+        if (!Compability.ThePrototypeExpansion.IsPrototypeItem(techType))
         {
-            return StorageCategory.PlantAir;
+            // Plants
+            if (TechData.GetBackgroundType(techType) == CraftData.BackgroundType.PlantAir)
+            {
+                return StorageCategory.PlantAir;
+            }
+
+            if (TechData.GetBackgroundType(techType) == CraftData.BackgroundType.PlantAirSeed)
+            {
+                return StorageCategory.PlantAirSeed;
+            }
+
+            if (TechData.GetBackgroundType(techType) == CraftData.BackgroundType.PlantWaterSeed)
+            {
+                return StorageCategory.PlantWaterSeed;
+            }
+
+            if (TechData.GetBackgroundType(techType) == CraftData.BackgroundType.PlantWater)
+            {
+                return StorageCategory.PlantWater;
+            }
         }
-        if (TechData.GetBackgroundType(techType) == CraftData.BackgroundType.PlantAirSeed)
-        {
-            return StorageCategory.PlantAirSeed;
-        }
-        if (TechData.GetBackgroundType(techType) == CraftData.BackgroundType.PlantWaterSeed)
-        {
-            return StorageCategory.PlantWaterSeed;
-        }
-        if (TechData.GetBackgroundType(techType) == CraftData.BackgroundType.PlantWater)
-        {
-            return StorageCategory.PlantWater;
-        }
-        
+
         if (Utility.IsEatable(techType, container))
             return StorageCategory.Food;
         
-        foreach (var rule in CategoryRules)
+        foreach ((Func<TechType, bool> Condition, StorageCategory Category) rule in CategoryRules)
         {
             if (rule.Condition(techType))
                 return rule.Category;
         }
-
+        
         return StorageCategory.Unknown;
     }
 
     private static StorageLabel AnalyzeContents(StorageContainer container)
     {
-        var items = container.container.GetItemTypes();
+        List<TechType> items = container.container.GetItemTypes();
 
         if (items.Count == 0)
             return StorageLabel.Empty;
@@ -93,7 +103,7 @@ public static class LabelHandler
         }
             
 
-        var categories = items
+        HashSet<StorageCategory> categories = items
             .Select(item => GetStorageCategory(item, container))
             .ToHashSet();
 
@@ -104,7 +114,7 @@ public static class LabelHandler
             
 
         // if multiple categories, decide which should be displayed
-        foreach (var (combination, result) in CategoryCombinations)
+        foreach ((HashSet<StorageCategory> combination, StorageCategory result) in CategoryCombinations)
         {
             if (categories.SetEquals(combination))
             {
@@ -140,7 +150,7 @@ public static class LabelHandler
     
     public static string GetStorageLabel(StorageContainer container)
     {
-        var label = AnalyzeContents(container);
+        StorageLabel label = AnalyzeContents(container);
         return Localize(label);
     }
 }
