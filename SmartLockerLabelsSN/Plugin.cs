@@ -16,11 +16,15 @@ public class Plugin : BaseUnityPlugin
     private static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
 
     internal static readonly bool IsPrototypePossible = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.prototech.prototypesub");
+
+    internal static Config config;
     
     private void Awake()
     {
         // set project-scoped logger instance
         Logger = base.Logger;
+        
+        config = OptionsPanelHandler.RegisterModOptions<Config>();
         
         LanguageHandler.RegisterLocalizationFolder();
 
