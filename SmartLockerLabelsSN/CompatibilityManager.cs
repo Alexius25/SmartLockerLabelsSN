@@ -1,9 +1,9 @@
 using System.Reflection;
 using Nautilus.Handlers;
 
-namespace SmartLockerLabelsSN.Compability;
+namespace SmartLockerLabelsSN;
 
-public static class ThePrototypeExpansion
+public static class CompatibilityManager
 {
     public static bool IsPrototypeItem(TechType techType)
     {

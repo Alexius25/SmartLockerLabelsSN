@@ -54,7 +54,7 @@ public static class LabelHandler
             return StorageCategory.Tool;
         }
 
-        if (!Compability.ThePrototypeExpansion.IsPrototypeItem(techType))
+        if (!CompatibilityManager.IsPrototypeItem(techType))
         {
             // Plants
             if (TechData.GetBackgroundType(techType) == CraftData.BackgroundType.PlantAir)
